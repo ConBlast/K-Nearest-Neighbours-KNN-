@@ -3,4 +3,4 @@
 Sprint 3 STI
 
 Christian Castro A00369032
-Camilo Gómez A00-
+Camilo Gómez A00369838
