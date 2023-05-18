@@ -4,12 +4,14 @@ print("Ejecutando el programa")
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_distances
 import ipywidgets as widgets
-from IPython.display import display
+from IPython.display import display , clear_output
 import matplotlib.pyplot as plt
 
+ # Cargar los datos desde la tabla de excel
+datos = pd.read_csv("basepizza.csv", index_col=0)
+
 def recomendar_usuario(nombre_usuario, k):
-    # Cargar los datos desde la tabla de excel
-    datos = pd.read_csv("basepizza.csv", index_col=0)
+    clear_output() #limpiar la salida actual
     
     # Seleccionar el vector de características del usuario de interés
     vector_p = datos.loc[nombre_usuario].values
@@ -36,8 +38,11 @@ def recomendar_usuario(nombre_usuario, k):
     plt.show()
     
 def on_button_clicked(b):
+    nombre_usuario = dropdown.value
+    k = 3
+    recomendar_usuario(nombre_usuario,k)
     # Llamar a la función recomendar_usuario con el valor seleccionado del menú desplegable
-    vecindario = recomendar_usuario(dropdown.value, 3)
+    # vecindario = recomendar_usuario(dropdown.value, 3)
     
 dropdown = widgets.Dropdown(
     options=list(pd.read_csv("basepizza.csv", index_col=0).index),
@@ -46,8 +51,18 @@ dropdown = widgets.Dropdown(
 )
 
 button = widgets.Button(description="Buscar")
-
-display(dropdown)
-display(button)
-
 button.on_click(on_button_clicked)
+
+output = widgets.Output()
+
+display(dropdown, button, output)
+
+def mostrar_tabla(change):
+    with output:
+        clear_output()
+        nombre_usuario = dropdown.value
+        k = 3
+        recomendar_usuario(nombre_usuario,k)
+dropdown.observe(mostrar_tabla,'value')
+
+
