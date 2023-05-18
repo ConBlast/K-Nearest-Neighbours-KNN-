@@ -4,14 +4,13 @@ print("Ejecutando el programa")
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_distances
 import ipywidgets as widgets
-from IPython.display import display , clear_output
+from IPython.display import display, clear_output
 import matplotlib.pyplot as plt
 
- # Cargar los datos desde la tabla de excel
 datos = pd.read_csv("basepizza.csv", index_col=0)
 
 def recomendar_usuario(nombre_usuario, k):
-    clear_output() #limpiar la salida actual
+    clear_output()  # Limpiar la salida actual
     
     # Seleccionar el vector de características del usuario de interés
     vector_p = datos.loc[nombre_usuario].values
@@ -31,21 +30,20 @@ def recomendar_usuario(nombre_usuario, k):
         
     # Graficar las distancias coseno
     fig, ax = plt.subplots()
-    ax.bar(vecindario, distancias_vecinos)
+    colores = ['blue', 'red', 'green', 'orange', 'purple', 'yellow']  # Colores para las barras
+    ax.bar(vecindario, distancias_vecinos, color=colores[:len(vecindario)])
     ax.set_title("Distancias Coseno")
     ax.set_xlabel("Usuarios")
     ax.set_ylabel("Distancia Coseno")
     plt.show()
-    
+
 def on_button_clicked(b):
     nombre_usuario = dropdown.value
     k = 3
-    recomendar_usuario(nombre_usuario,k)
-    # Llamar a la función recomendar_usuario con el valor seleccionado del menú desplegable
-    # vecindario = recomendar_usuario(dropdown.value, 3)
-    
+    recomendar_usuario(nombre_usuario, k)
+
 dropdown = widgets.Dropdown(
-    options=list(pd.read_csv("basepizza.csv", index_col=0).index),
+    options=list(datos.index),
     description='Nombre:',
     disabled=False,
 )
@@ -59,10 +57,9 @@ display(dropdown, button, output)
 
 def mostrar_tabla(change):
     with output:
-        clear_output()
+        clear_output()  # Limpiar la salida actual
         nombre_usuario = dropdown.value
         k = 3
-        recomendar_usuario(nombre_usuario,k)
-dropdown.observe(mostrar_tabla,'value')
+        recomendar_usuario(nombre_usuario, k)
 
-
+dropdown.observe(mostrar_tabla, 'value')
