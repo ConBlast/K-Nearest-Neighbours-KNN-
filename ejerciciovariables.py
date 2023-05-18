@@ -30,7 +30,7 @@ def recomendar_usuario(nombre_usuario, k):
         
     # Graficar las distancias coseno
     fig, ax = plt.subplots()
-    colores = ['blue', 'red', 'green', 'orange', 'purple', 'yellow']  # Colores para las barras
+    colores = ['indigo', 'palevioletred', 'crimson', 'orange', 'purple', 'yellow']  # Colores para las barras
     ax.bar(vecindario, distancias_vecinos, color=colores[:len(vecindario)])
     ax.set_title("Distancias Coseno")
     ax.set_xlabel("Usuarios")
